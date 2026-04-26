@@ -3,12 +3,15 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
+      id-token: write
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
@@ -28,15 +31,44 @@ jobs:
 
       - name: Prepare deployment
         run: |
-          # Copy the generated index.html into the client folder if needed
-          if [ -f dist/index.html ] && [ ! -f dist/client/index.html ]; then
-            cp dist/index.html dist/client/index.html
+          echo "=== Build output structure ==="
+          find dist -type f | head -30
+          echo ""
+          echo "=== dist/client contents ==="
+          ls -la dist/client/ || echo "dist/client does not exist"
+          echo ""
+          echo "=== dist/index.html ==="
+          cat dist/index.html 2>/dev/null | head -20 || echo "dist/index.html does not exist"
+
+      - name: Ensure index.html exists in deploy folder
+        run: |
+          # Determine deploy folder
+          if [ -d dist/client ]; then
+            DEPLOY_DIR="dist/client"
+          else
+            DEPLOY_DIR="dist"
           fi
-          echo "Contents of dist/client:"
-          ls -la dist/client/
+          echo "Deploy dir: $DEPLOY_DIR"
+
+          # Ensure index.html exists
+          if [ ! -f "$DEPLOY_DIR/index.html" ]; then
+            if [ -f "dist/index.html" ]; then
+              cp dist/index.html "$DEPLOY_DIR/index.html"
+            fi
+          fi
+
+          # Copy index.html to 404.html for SPA routing support
+          if [ -f "$DEPLOY_DIR/index.html" ]; then
+            cp "$DEPLOY_DIR/index.html" "$DEPLOY_DIR/404.html"
+          fi
+
+          echo "=== Final deploy contents ==="
+          ls -la "$DEPLOY_DIR/"
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/client
+          force_orphan: true
+
