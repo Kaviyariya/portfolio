@@ -5,17 +5,21 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,9 +40,6 @@ jobs:
           echo ""
           echo "=== dist/client contents ==="
           ls -la dist/client/ || echo "dist/client does not exist"
-          echo ""
-          echo "=== dist/index.html ==="
-          cat dist/index.html 2>/dev/null | head -20 || echo "dist/index.html does not exist"
 
       - name: Ensure index.html exists in deploy folder
         run: |
@@ -65,10 +66,22 @@ jobs:
           echo "=== Final deploy contents ==="
           ls -la "$DEPLOY_DIR/"
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/client
-          force_orphan: true
+          path: ./dist/client
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
