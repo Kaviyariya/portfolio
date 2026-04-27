@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      // GitHub Pages 404 redirect trick for SPA routing
+      const path = window.location.pathname;
+      const basePath = '/personal_portfolio';
+      
+      // Remove the base path to get the route
+      const route = path.startsWith(basePath) ? path.slice(basePath.length) : path;
+      
+      // Redirect to index.html with the original route in the hash
+      window.location.replace(basePath + '/#' + (route || '/'));
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
