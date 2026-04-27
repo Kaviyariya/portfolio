@@ -5,6 +5,7 @@ import path from "path";
 
 export default defineConfig({
   base: "/personal_portfolio/",
+  publicDir: "public",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

@@ -33,19 +33,6 @@ jobs:
       - name: Build static site
         run: npm run build:static
 
-      - name: Add SPA routing support
-        run: |
-          cp dist-static/index-static.html dist-static/404.html
-          echo "=== dist-static contents ==="
-          ls -la dist-static/
-          echo "=== Assets ==="
-          ls -la dist-static/assets/ || echo "No assets dir"
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: none
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -61,3 +48,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          error_count: 0
