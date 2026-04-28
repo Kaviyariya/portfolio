@@ -1,12 +1,12 @@
 # Kaviya Balamurugan — Personal Portfolio
 
-[![Deploy to GitHub Pages](https://github.com/Kaviyariya/personal_portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Kaviyariya/personal_portfolio/actions/workflows/deploy.yml)
+[![Deploy to GitHub Pages](https://github.com/Kaviyariya/portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Kaviyariya/portfolio/actions/workflows/deploy.yml)
 
 > A modern, responsive personal portfolio website built with React, Vite, and Tailwind CSS.
 
 ## 🔗 Live Demo
 
-**[https://kaviyariya.github.io/personal_portfolio](https://kaviyariya.github.io/personal_portfolio)**
+**[https://kaviyariya.github.io/portfolio](https://kaviyariya.github.io/portfolio)**
 
 ## ✨ Features
 
@@ -32,7 +32,7 @@
 ## 📁 Project Structure
 
 ```
-personal_porfolio/
+portfolio/
 ├── .github/workflows/    # CI/CD deployment workflow
 ├── src/
 │   ├── components/       # Reusable UI components
@@ -59,8 +59,8 @@ personal_porfolio/
 
 ```bash
 # Clone the repository
-git clone https://github.com/Kaviyariya/personal_portfolio.git
-cd personal_portfolio
+git clone https://github.com/Kaviyariya/portfolio.git
+cd portfolio
 
 # Install dependencies
 npm install
