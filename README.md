@@ -85,6 +85,7 @@ The static files will be generated in the `dist/` directory.
 |--------|-------------|
 | `npm run dev` | Start development server with HMR |
 | `npm run build` | Build for production |
+| `npm run build:static` | Build static site for GitHub Pages |
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | Run ESLint |
 | `npm run format` | Format code with Prettier |
@@ -95,14 +96,14 @@ This project is automatically deployed to **GitHub Pages** via GitHub Actions on
 
 The deployment workflow:
 1. Installs dependencies with `npm ci`
-2. Builds the project with `npm run build`
-3. Deploys the `dist/client` folder to the `gh-pages` branch
+2. Builds the static site with `npm run build:static`
+3. Deploys the `dist-static/` folder to GitHub Pages
 
 To enable GitHub Pages:
 1. Go to **Settings → Pages** in your repository
-2. Under **Build and deployment**, select **Deploy from a branch**
-3. Choose the `gh-pages` branch and `/ (root)` folder
-4. Click **Save**
+2. Under **Build and deployment**, select **GitHub Actions**
+3. The workflow `.github/workflows/deploy.yml` will run automatically on push
+4. Your site will be live at `https://kaviyariya.github.io/portfolio`
 
 ## 📬 Contact
 
@@ -113,4 +114,3 @@ Feel free to reach out if you have any questions or suggestions!
 ---
 
 Built with ❤️ by **Kaviya Balamurugan**
-
